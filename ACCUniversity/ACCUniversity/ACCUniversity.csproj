@@ -180,6 +180,10 @@
     <Compile Include="Migrations\201803270745420_ColumnFirstName.Designer.cs">
       <DependentUpon>201803270745420_ColumnFirstName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803272328114_MyNewDatabaseWithShaneXoXo.cs" />
+    <Compile Include="Migrations\201803272328114_MyNewDatabaseWithShaneXoXo.Designer.cs">
+      <DependentUpon>201803272328114_MyNewDatabaseWithShaneXoXo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Department.cs" />
@@ -266,6 +270,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803270745420_ColumnFirstName.resx">
       <DependentUpon>201803270745420_ColumnFirstName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803272328114_MyNewDatabaseWithShaneXoXo.resx">
+      <DependentUpon>201803272328114_MyNewDatabaseWithShaneXoXo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
