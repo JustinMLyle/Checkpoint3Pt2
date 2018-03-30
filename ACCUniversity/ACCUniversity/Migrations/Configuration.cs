@@ -15,6 +15,16 @@ internal sealed class Configuration : DbMigrationsConfiguration<SchoolContext>
 
     protected override void Seed(SchoolContext context)
     {
+        var campusLocations = new List<CampusLocations>
+        {
+            new CampusLocations {campusId = 1, CampusCity = "Austin"},
+            new CampusLocations {campusId = 2, CampusCity = "Dallas"},
+            new CampusLocations {campusId = 3, CampusCity = "Houston"},
+            new CampusLocations {campusId = 4, CampusCity = "Washington D.C."},
+        };
+        campusLocations.ForEach(b => context.CampusLocations.AddOrUpdate(i => i.CampusCity,b));
+        context.SaveChanges();
+
         var students = new List<Student>
             {
                 new Student { FirstMidName = "Carson",   LastName = "Alexander",

@@ -31,5 +31,7 @@ namespace ACCUniversity.DAL
             //    .MapRightKey("InstructorID")
             //    .ToTable("CourseInstructor"));
         }
+
+        public System.Data.Entity.DbSet<ACCUniversity.Models.CampusLocations> CampusLocations { get; set; }
     }
 }

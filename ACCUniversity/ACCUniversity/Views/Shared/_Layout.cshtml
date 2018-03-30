@@ -4,32 +4,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Austin Coding University</title>
+    @Styles.Render("~/Content/bootstrap.css")
+    @Styles.Render("~/Content/mdb.css")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Austin Coding University", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Students", "Index", "Students")</li>
-                        <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
-                        <li>@Html.ActionLink("Instructors", "Index", "Instructor")</li>
-                        <li>@Html.ActionLink("Departments", "Index", "Departments")</li>
-                    </ul>
-                </div>
-            </div>
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark secondary-color">
+
+        <!-- Navbar brand -->
+        <a class="navbar-brand">ACC University</a>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Links -->
+            <a class="nav-item nav-link active" href="#"> @Html.ActionLink("Home", "Index", "Home") </a>
+            <a class="nav-item nav-link " href="#"> @Html.ActionLink("Students", "Index", "Students")</a>
+            <a class="nav-item nav-link " href="#">@Html.ActionLink("Courses", "Index", "Courses")</a>
+            <a class="nav-item nav-link " href="#">@Html.ActionLink("Instructors", "Index", "Instructor")</a>
+            <a class="nav-item nav-link " href="#">@Html.ActionLink("Departments", "Index", "Departments")</a>
+            <a class="nav-item nav-link " href="#">@Html.ActionLink("CampusLocations", "Index", "CampusLocations")</a>
+            <a class="nav-item nav-link " href="#"> @Html.ActionLink("About", "About", "Home")</a>
         </div>
-    </div>
+    </nav>
 
     <div class="container">
         @RenderBody()
@@ -38,7 +42,9 @@
             <p>&copy; @DateTime.Now.Year - Austin Coding University</p>
         </footer>
     </div>
-
+    @Scripts.Render("~/Scripts/mdb.js")
+    @Scripts.Render("~/Scripts/bootstrap.js")
+    @Scripts.Render("~/Scripts/jquery-3.2.1.min.js")    
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
