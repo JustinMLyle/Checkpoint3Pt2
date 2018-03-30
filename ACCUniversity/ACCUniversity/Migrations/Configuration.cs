@@ -1,275 +1,215 @@
-namespace ACCUniversity.Migrations
+using ACCUniversity.Models;
+using ACCUniversity.DAL;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Linq;
+
+internal sealed class Configuration : DbMigrationsConfiguration<SchoolContext>
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using System.Data.Entity;
-    using ACCUniversity.Models;
-    using ACCUniversity.DAL;
-
-    using System.Data.Entity.Migrations;
-    
-
-    internal sealed class Configuration : DbMigrationsConfiguration<SchoolContext>
+    public Configuration()
     {
-       public void AddOrUpdateInstructor(SchoolContext schoolContext, string courseTitle, string instructorName)
-        {
-            var crs = schoolContext.Courses.SingleOrDefault(c => c.Title == courseTitle);
-            var inst = crs.Instructors.SingleOrDefault(i => i.LastName == instructorName);
-            if (inst == null)
-                crs.Instructors.Add(schoolContext.Instructors.Single(i => i.LastName == instructorName));
-        }
+        AutomaticMigrationsEnabled = true;
+    }
 
-        public void Seeder(SchoolContext context)
-        {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
-
-            var students = new List<Student> //initialize student db
+    protected override void Seed(SchoolContext context)
+    {
+        var students = new List<Student>
             {
-            new Student{FirstMidName="Shane",LastName="White",EnrollmentDate=DateTime.Parse("2005-09-01")},
-            new Student{FirstMidName="Hector",LastName="Garcia",EnrollmentDate=DateTime.Parse("2002-09-01")},
-            new Student{FirstMidName="Israel",LastName="Hernandez",EnrollmentDate=DateTime.Parse("2003-09-01")},
-            new Student{FirstMidName="Jackson",LastName="Five",EnrollmentDate=DateTime.Parse("2002-09-01")},
-            new Student{FirstMidName="Justin",LastName="Lyle",EnrollmentDate=DateTime.Parse("2002-09-01")},
+                new Student { FirstMidName = "Carson",   LastName = "Alexander",
+                    EnrollmentDate = DateTime.Parse("2010-09-01") },
+                new Student { FirstMidName = "Meredith", LastName = "Alonso",
+                    EnrollmentDate = DateTime.Parse("2012-09-01") },
+                new Student { FirstMidName = "Arturo",   LastName = "Anand",
+                    EnrollmentDate = DateTime.Parse("2013-09-01") },
+                new Student { FirstMidName = "Gytis",    LastName = "Barzdukas",
+                    EnrollmentDate = DateTime.Parse("2012-09-01") },
+                new Student { FirstMidName = "Yan",      LastName = "Li",
+                    EnrollmentDate = DateTime.Parse("2012-09-01") },
+                new Student { FirstMidName = "Peggy",    LastName = "Justice",
+                    EnrollmentDate = DateTime.Parse("2011-09-01") },
+                new Student { FirstMidName = "Laura",    LastName = "Norman",
+                    EnrollmentDate = DateTime.Parse("2013-09-01") },
+                new Student { FirstMidName = "Nino",     LastName = "Olivetto",
+                    EnrollmentDate = DateTime.Parse("2005-09-01") }
             };
 
+        students.ForEach(s => context.Students.AddOrUpdate(p => p.LastName, s));
+        context.SaveChanges();
 
-            students.ForEach(s => context.Students.Add(s));
-            context.SaveChanges();
-
-            var instructors = new List<Instructor>
+        var instructors = new List<Instructor>
             {
-                new Instructor { FirstMidName = "ShaneTwo",LastName = "Whiter", HireDate = DateTime.Parse("1995-03-11") },
-                new Instructor { FirstMidName = "Electric",LastName = "Boogaloo", HireDate = DateTime.Parse("2002-07-06") },
-                new Instructor { FirstMidName = "Ivana",   LastName = "KandyVar", HireDate = DateTime.Parse("1998-07-01")},
+                new Instructor { FirstMidName = "Kim",     LastName = "Abercrombie",
+                    HireDate = DateTime.Parse("1995-03-11") },
+                new Instructor { FirstMidName = "Fadi",    LastName = "Fakhouri",
+                    HireDate = DateTime.Parse("2002-07-06") },
+                new Instructor { FirstMidName = "Roger",   LastName = "Harui",
+                    HireDate = DateTime.Parse("1998-07-01") },
+                new Instructor { FirstMidName = "Candace", LastName = "Kapoor",
+                    HireDate = DateTime.Parse("2001-01-15") },
+                new Instructor { FirstMidName = "Roger",   LastName = "Zheng",
+                    HireDate = DateTime.Parse("2004-02-12") }
             };
+        instructors.ForEach(s => context.Instructors.AddOrUpdate(p => p.LastName, s));
+        context.SaveChanges();
 
-            instructors.ForEach(s => context.Instructors.Add(s));
-            context.SaveChanges();
-
-            var departments = new List<Department>
+        var departments = new List<Department>
             {
-                new Department { Name = "Web", Budget = 350000, StartDate = DateTime.Parse("2007-09-01"), InstructorID  = instructors.Single( i => i.LastName == "Whiter").ID },
-                new Department { Name = "C#", Budget = 100000, StartDate = DateTime.Parse("2007-09-01"), InstructorID  = instructors.Single( i => i.LastName == "Boogaloo").ID },
-                new Department { Name = "C++", Budget = 350000, StartDate = DateTime.Parse("2007-09-01"), InstructorID  = instructors.Single( i => i.LastName == "KandyVar").ID },
+                new Department { Name = "English",     Budget = 350000,
+                    StartDate = DateTime.Parse("2007-09-01"),
+                    InstructorID  = instructors.Single( i => i.LastName == "Abercrombie").ID },
+                new Department { Name = "Mathematics", Budget = 100000,
+                    StartDate = DateTime.Parse("2007-09-01"),
+                    InstructorID  = instructors.Single( i => i.LastName == "Fakhouri").ID },
+                new Department { Name = "Engineering", Budget = 350000,
+                    StartDate = DateTime.Parse("2007-09-01"),
+                    InstructorID  = instructors.Single( i => i.LastName == "Harui").ID },
+                new Department { Name = "Economics",   Budget = 100000,
+                    StartDate = DateTime.Parse("2007-09-01"),
+                    InstructorID  = instructors.Single( i => i.LastName == "Kapoor").ID }
             };
+        departments.ForEach(s => context.Departments.AddOrUpdate(p => p.Name, s));
+        context.SaveChanges();
 
-            departments.ForEach(s => context.Departments.AddOrUpdate(p => p.Name, s));
-            context.SaveChanges();
-
-            var courses = new List<Course> //initialize courses db
+        var courses = new List<Course>
             {
-            new Course{CourseID=1,Title="Intro to Web",Credits=3, DepartmentID = departments.Single( s => s.Name == "Web").DepartmentID,
+                new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3,
+                  DepartmentID = departments.Single( s => s.Name == "Engineering").DepartmentID,
                   Instructors = new List<Instructor>()
-            },
-            new Course{CourseID=2,Title="C# Intro",Credits=3,  DepartmentID = departments.Single( s => s.Name == "C#").DepartmentID,
+                },
+                new Course {CourseID = 4022, Title = "Microeconomics", Credits = 3,
+                  DepartmentID = departments.Single( s => s.Name == "Economics").DepartmentID,
                   Instructors = new List<Instructor>()
-            },
-            new Course{CourseID=3,Title="C# Advanced",Credits=3,  DepartmentID = departments.Single( s => s.Name == "c++").DepartmentID,
+                },
+                new Course {CourseID = 4041, Title = "Macroeconomics", Credits = 3,
+                  DepartmentID = departments.Single( s => s.Name == "Economics").DepartmentID,
                   Instructors = new List<Instructor>()
-            },
-
+                },
+                new Course {CourseID = 1045, Title = "Calculus",       Credits = 4,
+                  DepartmentID = departments.Single( s => s.Name == "Mathematics").DepartmentID,
+                  Instructors = new List<Instructor>()
+                },
+                new Course {CourseID = 3141, Title = "Trigonometry",   Credits = 4,
+                  DepartmentID = departments.Single( s => s.Name == "Mathematics").DepartmentID,
+                  Instructors = new List<Instructor>()
+                },
+                new Course {CourseID = 2021, Title = "Composition",    Credits = 3,
+                  DepartmentID = departments.Single( s => s.Name == "English").DepartmentID,
+                  Instructors = new List<Instructor>()
+                },
+                new Course {CourseID = 2042, Title = "Literature",     Credits = 4,
+                  DepartmentID = departments.Single( s => s.Name == "English").DepartmentID,
+                  Instructors = new List<Instructor>()
+                },
             };
-            courses.ForEach(s => context.Courses.Add(s));
-            context.SaveChanges();
+        courses.ForEach(s => context.Courses.AddOrUpdate(p => p.CourseID, s));
+        context.SaveChanges();
 
-            var officeAssignments = new List<OfficeAssignment>
+        var officeAssignments = new List<OfficeAssignment>
             {
                 new OfficeAssignment {
-                    InstructorID = instructors.Single( i => i.LastName == "Whiter").ID,
-                    Location = "Building A" },
+                    InstructorID = instructors.Single( i => i.LastName == "Fakhouri").ID,
+                    Location = "Smith 17" },
                 new OfficeAssignment {
-                    InstructorID = instructors.Single( i => i.LastName == "Boogaloo").ID,
-                    Location = "Building B" },
+                    InstructorID = instructors.Single( i => i.LastName == "Harui").ID,
+                    Location = "Gowan 27" },
                 new OfficeAssignment {
-                    InstructorID = instructors.Single( i => i.LastName == "KandyVar").ID,
-                    Location = "Building C" },
+                    InstructorID = instructors.Single( i => i.LastName == "Kapoor").ID,
+                    Location = "Thompson 304" },
             };
-            officeAssignments.ForEach(s => context.OfficeAssignments.AddOrUpdate(p => p.InstructorID, s));
-            context.SaveChanges();
+        officeAssignments.ForEach(s => context.OfficeAssignments.AddOrUpdate(p => p.InstructorID, s));
+        context.SaveChanges();
 
-            AddOrUpdateInstructor(context, "Intro to Web", "Whiter");
-            AddOrUpdateInstructor(context, "Intro to C#", "Boogaloo");
-            AddOrUpdateInstructor(context, "C# Advance", "KandyVar");
+        AddOrUpdateInstructor(context, "Chemistry", "Kapoor");
+        AddOrUpdateInstructor(context, "Chemistry", "Harui");
+        AddOrUpdateInstructor(context, "Microeconomics", "Zheng");
+        AddOrUpdateInstructor(context, "Macroeconomics", "Zheng");
 
-            context.SaveChanges();
+        AddOrUpdateInstructor(context, "Calculus", "Fakhouri");
+        AddOrUpdateInstructor(context, "Trigonometry", "Harui");
+        AddOrUpdateInstructor(context, "Composition", "Abercrombie");
+        AddOrUpdateInstructor(context, "Literature", "Abercrombie");
 
+        context.SaveChanges();
 
-            var enrollments = new List<Enrollment> //initialize enrollments
+        var enrollments = new List<Enrollment>
             {
-           new Enrollment {
-                    StudentID = students.Single(s => s.LastName == "Whiter").ID,
-                    CourseID = courses.Single(c => c.Title == "Intro to Web" ).CourseID,
+                new Enrollment {
+                    StudentID = students.Single(s => s.LastName == "Alexander").ID,
+                    CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
                     Grade = Grade.A
                 },
                  new Enrollment {
-                    StudentID = students.Single(s => s.LastName == "Lyle").ID,
-                    CourseID = courses.Single(c => c.Title == "Intro to C#" ).CourseID,
+                    StudentID = students.Single(s => s.LastName == "Alexander").ID,
+                    CourseID = courses.Single(c => c.Title == "Microeconomics" ).CourseID,
                     Grade = Grade.C
                  },
                  new Enrollment {
-                    StudentID = students.Single(s => s.LastName == "Garcia").ID,
-                    CourseID = courses.Single(c => c.Title == "C# Advance" ).CourseID,
+                    StudentID = students.Single(s => s.LastName == "Alexander").ID,
+                    CourseID = courses.Single(c => c.Title == "Macroeconomics" ).CourseID,
                     Grade = Grade.B
                  },
                  new Enrollment {
-                     StudentID = students.Single(s => s.LastName == "Five").ID,
-                    CourseID = courses.Single(c => c.Title == "Intro to C#" ).CourseID,
+                     StudentID = students.Single(s => s.LastName == "Alonso").ID,
+                    CourseID = courses.Single(c => c.Title == "Calculus" ).CourseID,
                     Grade = Grade.B
                  },
                  new Enrollment {
-                     StudentID = students.Single(s => s.LastName == "Hernandez").ID,
-                    CourseID = courses.Single(c => c.Title == "intro to web" ).CourseID,
+                     StudentID = students.Single(s => s.LastName == "Alonso").ID,
+                    CourseID = courses.Single(c => c.Title == "Trigonometry" ).CourseID,
                     Grade = Grade.B
                  },
+                 new Enrollment {
+                    StudentID = students.Single(s => s.LastName == "Alonso").ID,
+                    CourseID = courses.Single(c => c.Title == "Composition" ).CourseID,
+                    Grade = Grade.B
+                 },
+                 new Enrollment {
+                    StudentID = students.Single(s => s.LastName == "Anand").ID,
+                    CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID
+                 },
+                 new Enrollment {
+                    StudentID = students.Single(s => s.LastName == "Anand").ID,
+                    CourseID = courses.Single(c => c.Title == "Microeconomics").CourseID,
+                    Grade = Grade.B
+                 },
+                new Enrollment {
+                    StudentID = students.Single(s => s.LastName == "Barzdukas").ID,
+                    CourseID = courses.Single(c => c.Title == "Chemistry").CourseID,
+                    Grade = Grade.B
+                 },
+                 new Enrollment {
+                    StudentID = students.Single(s => s.LastName == "Li").ID,
+                    CourseID = courses.Single(c => c.Title == "Composition").CourseID,
+                    Grade = Grade.B
+                 },
+                 new Enrollment {
+                    StudentID = students.Single(s => s.LastName == "Justice").ID,
+                    CourseID = courses.Single(c => c.Title == "Literature").CourseID,
+                    Grade = Grade.B
+                 }
             };
 
-            foreach (Enrollment e in enrollments)
-            {
-                var enrollmentInDataBase = context.Enrollments.Where(
-                    s =>
-                         s.Student.ID == e.StudentID &&
-                         s.Course.CourseID == e.CourseID).SingleOrDefault();
-                if (enrollmentInDataBase == null)
-                {
-                    context.Enrollments.Add(e);
-                }
-            }
-            context.SaveChanges();
-
-
-        }
-
-        public Configuration()
+        foreach (Enrollment e in enrollments)
         {
-            AutomaticMigrationsEnabled = false;            
-        }
-
-        protected override void Seed(SchoolContext context)
-        {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
-
-            var students = new List<Student> //initialize student db
+            var enrollmentInDataBase = context.Enrollments.Where(
+                s =>
+                     s.Student.ID == e.StudentID &&
+                     s.Course.CourseID == e.CourseID).SingleOrDefault();
+            if (enrollmentInDataBase == null)
             {
-            new Student{FirstMidName="Shane",LastName="White",EnrollmentDate=DateTime.Parse("2005-09-01")},
-            new Student{FirstMidName="Hector",LastName="Garcia",EnrollmentDate=DateTime.Parse("2002-09-01")},
-            new Student{FirstMidName="Israel",LastName="Hernandez",EnrollmentDate=DateTime.Parse("2003-09-01")},
-            new Student{FirstMidName="Jackson",LastName="Five",EnrollmentDate=DateTime.Parse("2002-09-01")},
-            new Student{FirstMidName="Justin",LastName="Lyle",EnrollmentDate=DateTime.Parse("2002-09-01")},
-            };
-
-
-            students.ForEach(s => context.Students.Add(s));
-            context.SaveChanges();
-
-            var instructors = new List<Instructor>
-            {
-                new Instructor { FirstMidName = "ShaneTwo",LastName = "Whiter", HireDate = DateTime.Parse("1995-03-11") },
-                new Instructor { FirstMidName = "Electric",LastName = "Boogaloo", HireDate = DateTime.Parse("2002-07-06") },
-                new Instructor { FirstMidName = "Ivana",   LastName = "KandyVar", HireDate = DateTime.Parse("1998-07-01")},
-            };
-
-            instructors.ForEach(s => context.Instructors.Add(s));
-            context.SaveChanges();
-
-            var departments = new List<Department>
-            {
-                new Department { Name = "Web", Budget = 350000, StartDate = DateTime.Parse("2007-09-01"), InstructorID  = instructors.Single( i => i.LastName == "Whiter").ID },
-                new Department { Name = "C#", Budget = 100000, StartDate = DateTime.Parse("2007-09-01"), InstructorID  = instructors.Single( i => i.LastName == "Boogaloo").ID },
-                new Department { Name = "C++", Budget = 350000, StartDate = DateTime.Parse("2007-09-01"), InstructorID  = instructors.Single( i => i.LastName == "KandyVar").ID },
-            };
-
-            departments.ForEach(s => context.Departments.AddOrUpdate(p => p.Name, s));
-            context.SaveChanges();
-
-            var courses = new List<Course> //initialize courses db
-            {
-            new Course{CourseID=1,Title="Intro to Web",Credits=3, DepartmentID = departments.Single( s => s.Name == "Web").DepartmentID,
-                  Instructors = new List<Instructor>()
-            },
-            new Course{CourseID=2,Title="C# Intro",Credits=3,  DepartmentID = departments.Single( s => s.Name == "C#").DepartmentID,
-                  Instructors = new List<Instructor>()
-            },
-            new Course{CourseID=3,Title="C# Advanced",Credits=3,  DepartmentID = departments.Single( s => s.Name == "c++").DepartmentID,
-                  Instructors = new List<Instructor>()
-            },
-
-            };
-            courses.ForEach(s => context.Courses.Add(s));
-            context.SaveChanges();
-
-            var officeAssignments = new List<OfficeAssignment>
-            {
-                new OfficeAssignment {
-                    InstructorID = instructors.Single( i => i.LastName == "Whiter").ID,
-                    Location = "Building A" },
-                new OfficeAssignment {
-                    InstructorID = instructors.Single( i => i.LastName == "Boogaloo").ID,
-                    Location = "Building B" },
-                new OfficeAssignment {
-                    InstructorID = instructors.Single( i => i.LastName == "KandyVar").ID,
-                    Location = "Building C" },
-            };
-            officeAssignments.ForEach(s => context.OfficeAssignments.AddOrUpdate(p => p.InstructorID, s));
-            context.SaveChanges();
-
-            AddOrUpdateInstructor(context, "Intro to Web", "Whiter");
-            AddOrUpdateInstructor(context, "Intro to C#", "Boogaloo");
-            AddOrUpdateInstructor(context, "C# Advance", "KandyVar");
-
-            context.SaveChanges();
-
-
-            var enrollments = new List<Enrollment> //initialize enrollments
-            {
-           new Enrollment {
-                    StudentID = students.Single(s => s.LastName == "Whiter").ID,
-                    CourseID = courses.Single(c => c.Title == "Intro to Web" ).CourseID,
-                    Grade = Grade.A
-                },
-                 new Enrollment {
-                    StudentID = students.Single(s => s.LastName == "Lyle").ID,
-                    CourseID = courses.Single(c => c.Title == "Intro to C#" ).CourseID,
-                    Grade = Grade.C
-                 },
-                 new Enrollment {
-                    StudentID = students.Single(s => s.LastName == "Garcia").ID,
-                    CourseID = courses.Single(c => c.Title == "C# Advance" ).CourseID,
-                    Grade = Grade.B
-                 },
-                 new Enrollment {
-                     StudentID = students.Single(s => s.LastName == "Five").ID,
-                    CourseID = courses.Single(c => c.Title == "Intro to C#" ).CourseID,
-                    Grade = Grade.B
-                 },
-                 new Enrollment {
-                     StudentID = students.Single(s => s.LastName == "Hernandez").ID,
-                    CourseID = courses.Single(c => c.Title == "intro to web" ).CourseID,
-                    Grade = Grade.B
-                 },               
-            };
-
-            foreach (Enrollment e in enrollments)
-            {
-                var enrollmentInDataBase = context.Enrollments.Where(
-                    s =>
-                         s.Student.ID == e.StudentID &&
-                         s.Course.CourseID == e.CourseID).SingleOrDefault();
-                if (enrollmentInDataBase == null)
-                {
-                    context.Enrollments.Add(e);
-                }
+                context.Enrollments.Add(e);
             }
-            context.SaveChanges();
-  
-            
         }
+        context.SaveChanges();
+    }
+
+    void AddOrUpdateInstructor(SchoolContext context, string courseTitle, string instructorName)
+    {
+        var crs = context.Courses.SingleOrDefault(c => c.Title == courseTitle);
+        var inst = crs.Instructors.SingleOrDefault(i => i.LastName == instructorName);
+        if (inst == null)
+            crs.Instructors.Add(context.Instructors.Single(i => i.LastName == instructorName));
     }
 }

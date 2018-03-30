@@ -15,7 +15,7 @@ namespace ACCUniversity.Controllers
 {
     public class StudentsController : Controller
     {
-        private SchoolContext db = new SchoolContext();
+        private SchoolContext context = new SchoolContext();
 
         // GET: Students
         public ViewResult Index(string sortOrder, string searchString, string currentFilter, int? page)
@@ -35,7 +35,7 @@ namespace ACCUniversity.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var students = from s in db.Students
+            var students = from s in context.Students
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -71,7 +71,7 @@ namespace ACCUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+            Student student = context.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -94,8 +94,8 @@ namespace ACCUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Students.Add(student);
-                db.SaveChanges();
+                context.Students.Add(student);
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -109,7 +109,7 @@ namespace ACCUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+            Student student = context.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -128,13 +128,13 @@ namespace ACCUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var studentToUpdate = db.Students.Find(id);
+            var studentToUpdate = context.Students.Find(id);
             if (TryUpdateModel(studentToUpdate, "",
                new string[] { "LastName", "FirstMidName", "EnrollmentDate" }))
             {
                 try
                 {
-                    db.SaveChanges();
+                    context.SaveChanges();
 
                     return RedirectToAction("Index");
                 }
@@ -157,7 +157,7 @@ namespace ACCUniversity.Controllers
             {
                 ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
-            Student student = db.Students.Find(id);
+            Student student = context.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -172,9 +172,9 @@ namespace ACCUniversity.Controllers
         {
             try
             {
-                Student student = db.Students.Find(id);
-                db.Students.Remove(student);
-                db.SaveChanges();
+                Student student = context.Students.Find(id);
+                context.Students.Remove(student);
+                context.SaveChanges();
             }
             catch (RetryLimitExceededException /* dex */)
             {
@@ -188,7 +188,7 @@ namespace ACCUniversity.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                context.Dispose();
             }
             base.Dispose(disposing);
         }
